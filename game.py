@@ -19,6 +19,7 @@ BACKGROUND_COLOR = "#000000"
 # CLASSES -----------------------------------------------------------------------------------------------------------
 
 class Snake:
+    # initialization
     def __init__(self):
         self.body_size = BODY_PARTS
         self.coordinates = []
@@ -33,6 +34,7 @@ class Snake:
 
 
 class Food:
+    # initialization
     def __init__(self):
         # Defining where the food should spawn randomly
         # Converting to pixels by multiplying by the space size
@@ -119,11 +121,45 @@ def change_direction(new_direction):
     elif new_direction == 'enter':
         pass
 
+def difficulty():
+    window.update()
+    canvas.delete(ALL)
+    window.bind('<Left>',
+                lambda event: diff_one('easy'))
+    window.bind('<Down>',
+                lambda event: diff_two('normal'))
+    window.bind('<Right>',
+                lambda event: diff_three('hard'))
+    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2.50, font=('Determination Sans', 40),
+                       text="SELECT DIFFICULTY", fill=FOOD_COLOR)
+    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2), font=('Determination Sans', 20),
+                       text="Press the 'LEFT KEY' for Easy", fill="white")
+    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) + 25, font=('Determination Sans', 20),
+                       text="Press the 'DOWN KEY' for Normal", fill="white")
+    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) + 50, font=('Determination Sans', 20),
+                       text="Press the 'RIGHT KEY' for Hard", fill="white")
 
-def start(start_game):
-    if start_game == 'enter':
+def diff_one(one):
+    # use global variable
+    if one == 'easy':
+        global SPEED
+        SPEED = 150
         main_game()
 
+def diff_two(two):
+    # use global variable
+    if two == 'normal':
+        global SPEED
+        SPEED = 80
+        main_game()
+
+def diff_three(three):
+    # use global variable
+    if three == 'hard':
+        global SPEED
+        SPEED = 30
+        # configure
+        main_game()
 
 def counter(reset):
     if reset == 'enter':
@@ -132,6 +168,11 @@ def counter(reset):
         # configure
         label.config(text="Score: {}".format(score))
         title_screen()
+
+
+def start(start_game):
+    if start_game == 'enter':
+        difficulty()
 
 
 def title_screen():
