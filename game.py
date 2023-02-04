@@ -193,6 +193,12 @@ def start(start_game):
     if start_game == 'enter':
         difficulty()
 
+def exit(escape):
+    if escape == 'esc':
+        quit()
+
+# ----------------------------
+
 
 def title_screen():
     canvas.delete(ALL)
@@ -244,6 +250,9 @@ def game_over():
 
     window.bind('<Return>',
                 lambda event: counter('enter'))
+    window.bind('<Escape>',
+                lambda event: exit('esc'))
+
     canvas.delete(ALL)
     canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) - 45,
                        font=('determination sans', int(RATIO * 50)),
