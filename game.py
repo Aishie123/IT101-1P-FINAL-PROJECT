@@ -1,6 +1,7 @@
 from tkinter import *
 import random
 import pyglet
+import sys
 
 # SNAKE GAME by Team CRAKZ :>
 
@@ -14,6 +15,7 @@ BODY_PARTS = 3
 SNAKE_COLOR = "#8AC847"
 FOOD_COLOR = "#EDD455"
 BACKGROUND_COLOR = "#000000"
+RATIO = 1080 / 1920  # default screen ratio
 
 
 # CLASSES -----------------------------------------------------------------------------------------------------------
@@ -121,23 +123,35 @@ def change_direction(new_direction):
     elif new_direction == 'enter':
         pass
 
+
 def difficulty():
+    global RATIO
+
     window.update()
     canvas.delete(ALL)
+
     window.bind('<Left>',
                 lambda event: diff_one('easy'))
     window.bind('<Down>',
                 lambda event: diff_two('normal'))
     window.bind('<Right>',
                 lambda event: diff_three('hard'))
-    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2.50, font=('Determination Sans', 40),
+
+    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2.50,
+                       font=('Determination Sans', int(RATIO * 30)),
                        text="SELECT DIFFICULTY", fill=FOOD_COLOR)
-    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2), font=('Determination Sans', 20),
+    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2),
+                       font=('Determination Sans', int(RATIO * 15)),
                        text="Press the 'LEFT KEY' for Easy", fill="white")
-    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) + 25, font=('Determination Sans', 20),
+    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) + 25,
+                       font=('Determination Sans', int(RATIO * 15)),
                        text="Press the 'DOWN KEY' for Normal", fill="white")
-    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) + 50, font=('Determination Sans', 20),
+    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) + 50,
+                       font=('Determination Sans', int(RATIO * 15)),
                        text="Press the 'RIGHT KEY' for Hard", fill="white")
+
+
+# difficulty levels ------
 
 def diff_one(one):
     # use global variable
@@ -146,12 +160,14 @@ def diff_one(one):
         SPEED = 150
         main_game()
 
+
 def diff_two(two):
     # use global variable
     if two == 'normal':
         global SPEED
         SPEED = 80
         main_game()
+
 
 def diff_three(three):
     # use global variable
@@ -161,6 +177,7 @@ def diff_three(three):
         # configure
         main_game()
 
+
 def counter(reset):
     if reset == 'enter':
         global score
@@ -169,6 +186,8 @@ def counter(reset):
         label.config(text="Score: {}".format(score))
         title_screen()
 
+
+# ----------------------------
 
 def start(start_game):
     if start_game == 'enter':
@@ -188,33 +207,56 @@ def title_screen():
 
     window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
-    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2.25, font=('Monster Friend 2 Back', 35),
-                       text="SNAKE GAME", fill="white", tag="game-over")
+    global RATIO
 
-    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2.25, font=('Monster Friend 2 Center', 35),
-                       text="SNAKE GAME", fill="red", tag="game-over")
+    if sys.platform == "win32":
+        RATIO = 1  # for windows
+    elif sys.platform == "darwin":
+        RATIO = 1.375  # for macOS
 
-    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2.25, font=('Monster Friend 2 Fore', 35),
-                       text="SNAKE GAME", fill="white", tag="game-over")
+    RATIO *= window.winfo_screenwidth() / 1920  # ratio of user's screen
 
-    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 1.75, font=('determination sans', 20),
-                       text="Press 'Enter' to Start", fill="red", tag="game-start")
+    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2.20,
+                       font=('Monster Friend 2 Back', int(RATIO * 28)),
+                       text="SNAKE GAME", fill="white")
+
+    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2.20,
+                       font=('Monster Friend 2 Center', int(RATIO * 28)),
+                       text="SNAKE GAME", fill="red")
+
+    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2.20,
+                       font=('Monster Friend 2 Fore', int(RATIO * 28)),
+                       text="SNAKE GAME", fill="white")
+
+    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 1.80,
+                       font=('determination sans', int(RATIO * 15)),
+                       text="Press 'Enter' to Start", fill="red")
 
     window.bind('<Return>',
                 lambda event: start('enter'))
 
 
 def game_over():
+    global RATIO
+
     canvas.delete(ALL)
     window.update()
+
     window.bind('<Return>',
                 lambda event: counter('enter'))
     canvas.delete(ALL)
-    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2.25, font=('determination sans', 60),
+    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) - 45,
+                       font=('determination sans', int(RATIO * 50)),
                        text="GAME OVER", fill="red", tag="game_over")
-    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 1.75, font=('determination sans', 20),
-                       text="Press 'Enter' to Try Again", fill="white", tag="game-start")
+    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) + 10,
+                       font=('determination sans', int(RATIO * 15)),
+                       text="Press 'Enter' to Try Again", fill="white")
+    canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) + 35,
+                       font=('determination sans', int(RATIO * 15)),
+                       text="Press 'Esc' to Exit Game", fill="white")
 
+
+# ----------------------------
 
 def check_collisions(snake):
     # Unpacking the head of the snake
