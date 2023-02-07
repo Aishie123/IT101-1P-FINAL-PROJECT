@@ -54,8 +54,6 @@ class Food:
 # FUNCTIONS -----------------------------------------------------------------------------------------------------------
 
 def title_screen():
-    canvas.delete(ALL)
-    window.update()
 
     window_width = window.winfo_width()
     window_height = window.winfo_height()
@@ -124,6 +122,7 @@ def difficulty():
                        text="Press the 'RIGHT KEY' for Hard", fill="white")
 
 def main_game():
+
     canvas.delete(ALL)
     window.update()
 
