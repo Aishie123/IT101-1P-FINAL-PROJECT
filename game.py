@@ -55,6 +55,9 @@ class Food:
 
 def title_screen():
 
+    canvas.delete(ALL)
+    window.update()
+
     window_width = window.winfo_width()
     window_height = window.winfo_height()
     screen_width = window.winfo_screenwidth()
@@ -98,8 +101,8 @@ def difficulty():
     # Display for the difficulty levels
     global RATIO
 
-    window.update()
     canvas.delete(ALL)
+    window.update()
 
     window.bind('<Left>',
                 lambda event: diff_levels('easy'))
@@ -120,6 +123,7 @@ def difficulty():
     canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) + 50,
                        font=('Determination Sans', int(RATIO * 15)),
                        text="Press the 'RIGHT KEY' for Hard", fill="white")
+
 
 def main_game():
 
@@ -154,7 +158,6 @@ def game_over():
     window.bind('<Escape>',
                 lambda event: exit('esc'))
 
-    canvas.delete(ALL)
     canvas.create_text(canvas.winfo_width() / 2, (canvas.winfo_height() / 2) - 45,
                        font=('determination sans', int(RATIO * 50)),
                        text="GAME OVER", fill="red", tag="game_over")
